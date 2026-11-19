@@ -760,6 +760,25 @@
   @media (prefers-reduced-motion: reduce) {
     .fadd:active { transform: none; }
   }
+
+/* ─────────── Плавающая кнопка «‹ Назад» (engine/food/back-button.css — только у кафе с settings.backButton: true) ─────────── */
+  /* Внизу справа по краю колонки меню (448 px), над нижней панелью (--fback-b ставит back-button.js); заливка — тёмный цвет
+     логотипа (--ink из brand.ink, без него — главный цвет), белый текст; экрану — отступ снизу, чтобы кнопка не закрывала
+     последнюю строку и её «+» */
+  .fback {
+    position: fixed; z-index: 11; right: max(16px, env(safe-area-inset-right), calc(50% - 224px));
+    bottom: var(--fback-b, calc(16px + env(safe-area-inset-bottom)));
+    display: inline-flex; align-items: center; gap: 4px; min-height: 48px; min-width: 48px; padding: 0 20px 0 12px;
+    border: 0; border-radius: 16px; background: var(--ink, var(--accent-strong)); color: var(--on-ink, var(--on-accent));
+    font: 600 16px/1.2 var(--font-body); box-shadow: var(--ink-shadow, var(--shadow)); cursor: pointer;
+    animation: fadeIn .3s var(--ease) backwards; transition: transform .18s var(--ease);
+  }
+  .fback .ico { width: 22px; height: 22px; stroke-width: 2.2; }
+  .fback:active { transform: scale(.96); }
+  .screen.has-fback { padding-bottom: calc(var(--fback-b, calc(16px + env(safe-area-inset-bottom))) + 72px); }
+  @media (prefers-reduced-motion: reduce) {
+    .fback:active { transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -2771,7 +2790,7 @@ function init() {
 // Фото — карта PHOTOS от сборки (tools/photos.js: source/photos + source/foto-spisok.md), файлы рядом в photos/:
 // c — фото разделов (<имя>-t.webp плитка, <имя>.webp шапка), i — фото блюд «категория/блюдо» (<имя>.webp карточка, <имя>-m.webp миниатюра).
 // Нет фото или файл не загрузился — рисунок.
-const PHOTOS = { c: {}, i: {} };
+const PHOTOS = {"c":{"sety":"kat-sety","holodnye":"kat-holodnye","zapechennye":"kat-zapechennye","tempura":"kat-tempura","pizza":"kat-pizza","burgery":"kat-burgery","kombo":"kat-kombo","zakuski":"kat-zakuski","kombo-krylyshki":"kat-kombo-krylyshki","doner":"kat-doner","sousy":"kat-sousy","goryachie-napitki":"kat-goryachie-napitki","napitki":"kat-napitki"},"i":{"sety/taau-mini":"taau-mini","sety/zharenyy":"zharenyy","sety/taau-love":"taau-love","sety/taau-box":"taau-box","sety/taau-family":"taau-family","sety/taau":"taau","sety/miks-filadelfiya":"miks-filadelfiya","sety/hit":"hit","sety/zapechennyy":"zapechennyy","sety/taau-king":"taau-king","sety/taau-mix":"taau-mix","sety/taau-party":"taau-party","sety/taau-mega":"taau-mega","holodnye/filadelfiya-klassika":"filadelfiya-klassika","holodnye/filadelfiya-ogurec":"filadelfiya-ogurec","holodnye/filadelfiya-ikra":"filadelfiya-ikra","holodnye/filadelfiya-drakon":"filadelfiya-drakon","holodnye/filadelfiya-ugor":"filadelfiya-ugor","holodnye/kaliforniya-krevetka":"kaliforniya-krevetka","holodnye/kaliforniya-losos":"kaliforniya-losos","holodnye/kaliforniya-krab":"kaliforniya-krab","holodnye/kapa-maki":"kapa-maki","holodnye/ebi-maki":"ebi-maki","holodnye/kani-maki":"kani-maki","holodnye/unagi-maki":"unagi-maki","holodnye/saki-maki":"saki-maki","holodnye/alyaska":"alyaska","holodnye/bonito":"bonito","holodnye/kanada":"kanada","zapechennye/cezar-zapechennyy":"cezar-zapechennyy","zapechennye/filadelfiya-zapechennyy":"filadelfiya-zapechennyy","zapechennye/lava-zapechennyy":"lava-zapechennyy","zapechennye/amerika-zapechennyy":"amerika-zapechennyy","zapechennye/kaliforniya-zapechennyy":"kaliforniya-zapechennyy","zapechennye/krevetki-zapechennyy":"krevetki-zapechennyy","zapechennye/sake-zapechennyy":"sake-zapechennyy","zapechennye/unagi-zapechennyy":"unagi-zapechennyy","zapechennye/kapa-zapechennyy":"kapa-zapechennyy","tempura/roll-krevetki":"roll-krevetki","tempura/amerika-tempura":"amerika-tempura","tempura/kaliforniya-tempura":"kaliforniya-tempura","tempura/sake-tempura":"sake-tempura","tempura/unagi-tempura":"unagi-tempura","tempura/cezar-roll":"cezar-roll","tempura/kapa-tempura":"kapa-tempura","pizza/pepperoni":"pepperoni","pizza/margarita":"margarita","pizza/boloneze":"boloneze","pizza/4-sezona":"4-sezona","pizza/kurinaya":"kurinaya","pizza/s-semgoy":"s-semgoy","pizza/s-gribami":"s-gribami","pizza/mexico":"mexico","pizza/kurica-griby":"kurica-griby","pizza/syrnaya":"syrnaya","pizza/cezar":"cezar","pizza/bbq":"bbq","pizza/ot-shefa":"ot-shefa","pizza/ladivina":"ladivina","pizza/ohotnichya":"ohotnichya","burgery/gamburger-kurinyy":"gamburger-kurinyy","burgery/gamburger-govyazhiy":"gamburger-govyazhiy","burgery/chizburger-kurinyy":"chizburger-kurinyy","burgery/chizburger-govyazhiy":"chizburger-govyazhiy","burgery/bbq-burger":"bbq-burger","kombo/kombo-gamburger-kurinyy":"kombo-gamburger-kurinyy","kombo/kombo-gamburger-govyazhiy":"kombo-gamburger-govyazhiy","kombo/kombo-chizburger-kurinyy":"kombo-chizburger-kurinyy","kombo/kombo-chizburger-govyazhiy":"kombo-chizburger-govyazhiy","kombo/kombo-bbq-burger":"kombo-bbq-burger","zakuski/syrnye-palochki":"syrnye-palochki","zakuski/naggetsy":"naggetsy","zakuski/fri":"fri","zakuski/chiken":"chiken","zakuski/krylyshki":"krylyshki","kombo-krylyshki/kombo-1":"kombo-1","kombo-krylyshki/kombo-2":"kombo-2","kombo-krylyshki/kombo-3":"kombo-3","doner/doner-kurinyy":"doner-kurinyy","doner/doner-govyazhiy":"doner-govyazhiy","doner/doner-assorti":"doner-assorti","sousy/ketchup":"ketchup","sousy/chesnochnyy":"chesnochnyy","sousy/barbekyu":"barbekyu","sousy/syrnyy":"syrnyy","goryachie-napitki/tashkentskiy-chay":"tashkentskiy-chay","goryachie-napitki/fruktovyy-chay":"fruktovyy-chay","goryachie-napitki/chay-s-molokom":"chay-s-molokom","goryachie-napitki/zelenyy-chay":"zelenyy-chay","goryachie-napitki/chernyy-chay":"chernyy-chay","napitki/coca-cola":"coca-cola","napitki/fuse-tea":"fuse-tea","napitki/kompot":"kompot","napitki/tassay":"tassay","napitki/ayran":"ayran"}};
 const DELIVERY = priceData.meta.delivery || { min: 0, fee: 0, pickup: false };
 const CART_KEY = LANG_KEY.replace(/lang$/, 'cart');
 const ORDER_KEY = LANG_KEY.replace(/lang$/, 'order');
@@ -3386,6 +3405,41 @@ function checkout(screen) {
   }
   paint();
 }
+
+// ─────────── Плавающая кнопка «‹ Назад» ───────────
+// Вставляет сборка (место BACK_BUTTON в food.js), только если в settings.js кафе backButton: true (первое — vostok).
+// На экранах раздела, карточки блюда и корзины — кнопка внизу справа, видна при любой прокрутке (на главной её нет).
+// Есть нижняя панель (корзина, «Добавить», «Заказать») — кнопка над ней: высота панели следится через ResizeObserver
+// (подсказка «не хватает …» меняет высоту). Нажатие = верхняя ссылка «‹ …» экрана (шаг назад: карточка → раздел → главная).
+let fbackWatch = null;
+
+const renderBack = render;
+render = function (route, direction) {
+  if (fbackWatch) { fbackWatch.disconnect(); fbackWatch = null; }
+  renderBack(route, direction);
+  const app = document.getElementById('app');
+  app.style.removeProperty('--fback-b');
+  const screen = app.querySelector('.screen');
+  const top = screen.querySelector('.back');
+  if (route.screen === 'home' || !top) return;
+  screen.classList.add('has-fback');
+  const btn = el('button', 'fback');
+  btn.type = 'button';
+  btn.appendChild(svgNode(ICONS.back));
+  btn.appendChild(el('span', null, t('back')));
+  btn.addEventListener('click', function () { top.click(); });
+  if (!direction) btn.style.animation = 'none';
+  app.appendChild(btn);
+  const bar = app.querySelector('.book-bar');
+  if (!bar) return;
+  // Над панелью: её верхние 12 px — прозрачная часть градиента
+  function place() { app.style.setProperty('--fback-b', Math.max(0, bar.offsetHeight - 12) + 'px'); }
+  place();
+  if (window.ResizeObserver) {
+    fbackWatch = new ResizeObserver(place);
+    fbackWatch.observe(bar);
+  }
+};
 
 // ─────────── Стоимость доставки уточнит оператор ───────────
 // Вставляет сборка (место FEE_ASK в food.js), только если в settings.js кафе delivery.feeAsk: true (первое — fortune-pizza).

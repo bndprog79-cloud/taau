@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const CACHE_VERSION = 'e7a8db9b5a';
+const CACHE_VERSION = 'ee5a32f14a';
 const CACHE_PREFIX = 'taau-';
 const CACHE = CACHE_PREFIX + CACHE_VERSION;
 const PAGE = './';
@@ -121,7 +121,34 @@ function assetResponse(req) {
 // категорий): загружаются при установке, по одному — сломанный файл не мешает остальным. Фото блюд не загружаются заранее:
 // «сначала кэш, потом сеть», удачный ответ сохраняется в тот же кэш (CACHE). Без сети и без копии — пустой ответ:
 // картинка не загрузится, на сайте останется рисунок (без сетевой ошибки в консоли).
-const PHOTO_PRECACHE = [];
+const PHOTO_PRECACHE = [
+  './photos/kat-burgery-t.webp',
+  './photos/kat-burgery.webp',
+  './photos/kat-doner-t.webp',
+  './photos/kat-doner.webp',
+  './photos/kat-goryachie-napitki-t.webp',
+  './photos/kat-goryachie-napitki.webp',
+  './photos/kat-holodnye-t.webp',
+  './photos/kat-holodnye.webp',
+  './photos/kat-kombo-krylyshki-t.webp',
+  './photos/kat-kombo-krylyshki.webp',
+  './photos/kat-kombo-t.webp',
+  './photos/kat-kombo.webp',
+  './photos/kat-napitki-t.webp',
+  './photos/kat-napitki.webp',
+  './photos/kat-pizza-t.webp',
+  './photos/kat-pizza.webp',
+  './photos/kat-sety-t.webp',
+  './photos/kat-sety.webp',
+  './photos/kat-sousy-t.webp',
+  './photos/kat-sousy.webp',
+  './photos/kat-tempura-t.webp',
+  './photos/kat-tempura.webp',
+  './photos/kat-zakuski-t.webp',
+  './photos/kat-zakuski.webp',
+  './photos/kat-zapechennye-t.webp',
+  './photos/kat-zapechennye.webp'
+];
 const photosUrl = new URL('./photos/', self.location).href;
 
 function precachePhotos() {
