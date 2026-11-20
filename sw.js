@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const CACHE_VERSION = '10bed00239';
+const CACHE_VERSION = 'aa24bfeeee';
 const CACHE_PREFIX = 'taau-';
 const CACHE = CACHE_PREFIX + CACHE_VERSION;
 const PAGE = './';

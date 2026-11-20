@@ -805,7 +805,7 @@ const priceData = {
     theme: "brand",
     siteUrl: "https://bndprog79-cloud.github.io/taau/",
     type: "food",
-    delivery: {"min":0,"fee":1,"freeFrom":3000,"pickup":true,"feeAsk":true,"untilTime":"23:00"},
+    delivery: {"min":3000,"fee":0,"pickup":true,"minFor":"delivery","untilTime":"23:00"},
     version: "1.0.0",
     updatedAt: "2026-11-19",       // дата «Цены актуальны на»
     defaultLang: "ru",            // ru | kk  [?] язык сайта — sverka п. 17
@@ -830,8 +830,8 @@ const priceData = {
     instagram: "https://www.instagram.com/taau.food", // владелец 20.11.2026; TikTok — ссылки нет (sverka п. 2)
     mapLink: "https://2gis.kz/almaty/firm/70000001119068534", // 2ГИС: карточка «Taau food, точка быстрого питания» — проверено 20.11.2026
     timezone: "Asia/Almaty",
-    // Режим работы: ежедневно 10:00–23:00 без перерыва (владелец 20.11.2026). Приём заказов до … (untilTime) не задан —
-    // заказ можно отправить в любое время.
+    // Режим работы: ежедневно 10:00–23:00 без перерыва (владелец 20.11.2026). Приём заказов — до 23:00
+    // (settings.js delivery.untilTime); вне часов — «Отправить предзаказ».
     hours: {
       week: {
         mon: { open: "10:00", close: "23:00" },
@@ -846,8 +846,8 @@ const priceData = {
     },
     // Мелким текстом в корзине: условия доставки (под адресом) и оплата (sverka п. 3, 4)
     deliveryNote: {
-      ru: "Доставка в квадрате ALMA CITY — ALATAU PLAZA: бесплатно при заказе от 3 000 ₸, при меньшей сумме стоимость уточнит оператор.",
-      kk: "ALMA CITY — ALATAU PLAZA шаршысында жеткізу: 3 000 ₸-ден бастап тегін, аз сомада бағасын оператор нақтылайды."
+      ru: "Доставка от 3 000 ₸ — бесплатно, в пределах ALMA CITY — ALATAU PLAZA.",
+      kk: "Жеткізу 3 000 ₸-ден бастап — тегін, ALMA CITY — ALATAU PLAZA аумағында."
     },
     paymentNote: { ru: "Способы оплаты уточнит оператор.", kk: "Төлем тәсілдерін оператор нақтылайды." }
   },
@@ -943,12 +943,11 @@ const priceData = {
       commentHint: "Например: без лука, позвонить за 10 минут",
       subtotal: "Сумма",
       deliveryFee: "Доставка",
-      feeAsk: "уточнит оператор",          // доставка: стоимость неизвестна (settings.delivery.feeAsk), суммы нет
-      msgFeeAsk: "Доставка: уточнить",
-      free: "бесплатно",
+      free: "бесплатно (в пределах ALMA CITY — ALATAU PLAZA)", // только строка доставки в корзине и WhatsApp (уточнение 20.11.2026)
       total: "Итого",
       toFree: "До бесплатной доставки осталось {sum}",
       toMin: "До минимальной суммы заказа не хватает {sum}",
+      toMinDelivery: "До доставки не хватает {sum}",   // минимум только для доставки (settings.delivery.minFor)
       needAddress: "Укажите адрес доставки",
       order: "Заказать в WhatsApp",
       preorder: "Отправить предзаказ в WhatsApp",
@@ -1055,12 +1054,11 @@ const priceData = {
       commentHint: "Мысалы: пиязсыз, 10 минут бұрын қоңырау шалыңыз",
       subtotal: "Сомасы",
       deliveryFee: "Жеткізу",
-      feeAsk: "оператор нақтылайды",
-      msgFeeAsk: "Жеткізу: нақтылау",
-      free: "тегін",
+      free: "тегін (ALMA CITY — ALATAU PLAZA аумағында)",
       total: "Барлығы",
       toFree: "Тегін жеткізуге дейін {sum} қалды",
       toMin: "Ең аз тапсырыс сомасына {sum} жетпейді",
+      toMinDelivery: "Жеткізуге {sum} жетпейді",
       needAddress: "Жеткізу мекенжайын көрсетіңіз",
       order: "WhatsApp арқылы тапсырыс беру",
       preorder: "WhatsApp арқылы алдын ала тапсырыс жіберу",
@@ -3399,6 +3397,7 @@ function checkout(screen) {
     let block = '';
     if (tot.subtotal < DELIVERY.min) block = fill(t('toMin'), { sum: formatAmount(DELIVERY.min - tot.subtotal) });
     else if (delivery && !order.address.trim()) block = t('needAddress');
+    if (tot.subtotal < DELIVERY.min) block = delivery ? fill(t('toMinDelivery'), { sum: formatAmount(DELIVERY.min - tot.subtotal) }) : ''; // минимум только для доставки (delivery.minFor)
     bar.textContent = '';
     if (block) {
       const hint = el('p', 'fbar-hint num', block);
@@ -3454,31 +3453,6 @@ render = function (route, direction) {
     fbackWatch = new ResizeObserver(place);
     fbackWatch.observe(bar);
   }
-};
-
-// ─────────── Стоимость доставки уточнит оператор ───────────
-// Вставляет сборка (место FEE_ASK в food.js), только если в settings.js кафе delivery.feeAsk: true (первое — fortune-pizza).
-// Доставка платная, но цена зависит от адреса: delivery.fee — цена «от» (например, 1 000 ₸). В сумму заказа доставка
-// не прибавляется (итого = сумма блюд); в корзине строка доставки — ui.feeAsk («от 1 000 ₸, уточнит оператор»),
-// в сообщении WhatsApp — ui.msgFeeAsk («Доставка: уточнить»). Самовывоз — как обычно.
-const cartTotalsFee = cartTotals;
-cartTotals = function (mode) {
-  const tot = cartTotalsFee(mode);
-  tot.total -= tot.fee;
-  tot.fee = 0;
-  return tot;
-};
-
-// Доставка в сумме всегда 0 — вместо «бесплатно» надпись «от … , уточнит оператор»
-const tFee = t;
-t = function (key) {
-  return key === 'free' ? fill(tFee('feeAsk'), { sum: formatAmount(DELIVERY.fee) }) : tFee(key);
-};
-
-const orderTextFee = orderText;
-orderText = function (open) {
-  const line = fill(t('msgDelivery'), { sum: t('free') });
-  return orderTextFee(open).split('\n').map(function (l) { return l === line ? t('msgFeeAsk') : l; }).join('\n');
 };
 
 init();
