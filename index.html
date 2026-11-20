@@ -789,7 +789,7 @@
   <p class="salon">TAAU</p>
   <p lang="ru">Чтобы посмотреть меню и сделать заказ, откройте его в браузере или позвоните нам.</p>
   <p lang="kk">Мәзірді көріп, тапсырыс беру үшін оны браузерде ашыңыз немесе бізге қоңырау шалыңыз.</p>
-  <a class="nos-tel" href="tel:+77000899992">+7 700 089 99 92</a>
+  <a class="nos-tel" href="tel:+77082656825">+7 708 265 68 25</a>
   <a class="btn-book" href="https://bndprog79-cloud.github.io/taau/"><span lang="ru">Открыть меню в браузере</span><span lang="kk">Мәзірді браузерде ашу</span></a>
 </div>
 </noscript>
@@ -805,7 +805,7 @@ const priceData = {
     theme: "brand",
     siteUrl: "https://bndprog79-cloud.github.io/taau/",
     type: "food",
-    delivery: {"min":0,"fee":1,"pickup":true,"feeAsk":true},
+    delivery: {"min":0,"fee":1,"freeFrom":3000,"pickup":true,"feeAsk":true,"untilTime":"23:00"},
     version: "1.0.0",
     updatedAt: "2026-11-19",       // дата «Цены актуальны на»
     defaultLang: "ru",            // ru | kk  [?] язык сайта — sverka п. 17
@@ -823,16 +823,32 @@ const priceData = {
   company: {
     name: "TAAU",
     subtitle: { ru: "Sushi • Pizza • Coffee • Bubble tea", kk: "Sushi • Pizza • Coffee • Bubble tea" },
-    address: { ru: "Адрес и часы работы уточняются", kk: "Мекенжайы мен жұмыс уақыты нақтыланады" }, // [?] sverka п. 1
-    phone: "77000899992",          // 8 700 089 99 92 — телефон и WhatsApp кафе (Нуржан, 19.11.2026)
-    phoneDisplay: "+7 700 089 99 92",
-    whatsappNumber: "77000899992", // сюда приходят заказы
-    // Instagram, TikTok — нет данных (sverka п. 2): строки instagram нет — ссылки в подвале нет
-    mapLink: "https://2gis.kz/search/TAAU", // [?] ДЕМО: поиск 2ГИС по названию; до публикации заменить на точную ссылку 2ГИС (sverka п. 2)
+    address: { ru: "Алматы, ул. Жунисова, 12/8 (напротив школы)", kk: "Алматы, Жұнісова көшесі, 12/8 (мектептің қарсысында)" }, // владелец 20.11.2026
+    phone: "77082656825",          // 8 708 265 68 25 — телефон и WhatsApp для заказов (владелец и Нуржан, 20.11.2026)
+    phoneDisplay: "+7 708 265 68 25",
+    whatsappNumber: "77082656825", // сюда приходят заказы
+    instagram: "https://www.instagram.com/taau.food", // владелец 20.11.2026; TikTok — ссылки нет (sverka п. 2)
+    mapLink: "https://2gis.kz/almaty/firm/70000001119068534", // 2ГИС: карточка «Taau food, точка быстрого питания» — проверено 20.11.2026
     timezone: "Asia/Almaty",
-    // Режим работы неизвестен (sverka п. 1): hours нет — на сайте нет «Открыто/Закрыто», заказ можно отправить в любое время
-    // Мелким текстом в корзине: условия доставки и оплата (sverka п. 3, 4)
-    deliveryNote: { ru: "Условия доставки и самовывоза уточнит оператор.", kk: "Жеткізу және өзі алып кету шарттарын оператор нақтылайды." },
+    // Режим работы: ежедневно 10:00–23:00 без перерыва (владелец 20.11.2026). Приём заказов до … (untilTime) не задан —
+    // заказ можно отправить в любое время.
+    hours: {
+      week: {
+        mon: { open: "10:00", close: "23:00" },
+        tue: { open: "10:00", close: "23:00" },
+        wed: { open: "10:00", close: "23:00" },
+        thu: { open: "10:00", close: "23:00" },
+        fri: { open: "10:00", close: "23:00" },
+        sat: { open: "10:00", close: "23:00" },
+        sun: { open: "10:00", close: "23:00" }
+      },
+      exceptions: []
+    },
+    // Мелким текстом в корзине: условия доставки (под адресом) и оплата (sverka п. 3, 4)
+    deliveryNote: {
+      ru: "Доставка в квадрате ALMA CITY — ALATAU PLAZA: бесплатно при заказе от 3 000 ₸, при меньшей сумме стоимость уточнит оператор.",
+      kk: "ALMA CITY — ALATAU PLAZA шаршысында жеткізу: 3 000 ₸-ден бастап тегін, аз сомада бағасын оператор нақтылайды."
+    },
     paymentNote: { ru: "Способы оплаты уточнит оператор.", kk: "Төлем тәсілдерін оператор нақтылайды." }
   },
 
@@ -844,7 +860,7 @@ const priceData = {
       searchPlaceholder: "Найти блюдо",
       searchClear: "Очистить",
       nothingFound: "Ничего не найдено",
-      openUntil: "Открыто до {time}",
+      openUntil: "Открыто · до {time}",
       closedOpensAt: "Закрыто · откроется в {time}",
       actionWhatsapp: "WhatsApp",
       actionCall: "Позвонить",
@@ -957,7 +973,7 @@ const priceData = {
       searchPlaceholder: "Тағамды іздеу",
       searchClear: "Тазалау",
       nothingFound: "Ештеңе табылмады",
-      openUntil: "{time} дейін ашық",
+      openUntil: "Ашық · {time}-ге дейін",
       closedOpensAt: "Жабық · ашылуы {time}",
       actionWhatsapp: "WhatsApp",
       actionCall: "Қоңырау",
@@ -1076,8 +1092,8 @@ const priceData = {
           desc: { ru: "+ компот в подарок. Филадельфия классика 10 шт, Цезарь роллы 10 шт, Саки маки 10 шт, Чикен 12 шт. Состав сета менять нельзя.",
                   kk: "+ сыйлыққа компот. Филадельфия классика 10 дана, Цезарь роллдары 10 дана, Саки маки 10 дана, Чикен 12 дана. Сеттің құрамын өзгертуге болмайды." } },
         { id: "zharenyy", illustration: "food-rolls", name: { ru: "Жареный", kk: "Қуырылған" }, price: { amount: 7750 },
-          desc: { ru: "+ компот в подарок. Америка темпура 10 шт, Цезарь роллы 10 шт, Унаги темпура 10 шт, Саке темпура 12 шт. Состав сета менять нельзя.",
-                  kk: "+ сыйлыққа компот. Америка темпура 10 дана, Цезарь роллдары 10 дана, Унаги темпура 10 дана, Саке темпура 12 дана. Сеттің құрамын өзгертуге болмайды." } }, // [?] Саке темпура 12 шт — как в меню, у остальных 10 (sverka п. 11)
+          desc: { ru: "+ компот в подарок. Америка темпура 10 шт, Цезарь роллы 10 шт, Унаги темпура 10 шт, Саке темпура 10 шт. Состав сета менять нельзя.",
+                  kk: "+ сыйлыққа компот. Америка темпура 10 дана, Цезарь роллдары 10 дана, Унаги темпура 10 дана, Саке темпура 10 дана. Сеттің құрамын өзгертуге болмайды." } }, // Саке темпура 10 шт (в меню 12 — опечатка; владелец 20.11.2026)
         { id: "taau-love", illustration: "food-combo", name: { ru: "TAAU love", kk: "TAAU love" }, price: { amount: 5800 },
           desc: { ru: "+ компот в подарок. Филадельфия классика 10 шт, Саке темпура 10 шт, Маргарита 30 см. Состав сета менять нельзя.",
                   kk: "+ сыйлыққа компот. Филадельфия классика 10 дана, Саке темпура 10 дана, Маргарита 30 см. Сеттің құрамын өзгертуге болмайды." } },
@@ -1095,7 +1111,7 @@ const priceData = {
                   kk: "+ сыйлыққа компот. Филадельфия классика 5 дана, жыланбалықпен 5 дана, қиярмен 5 дана, уылдырықпен 5 дана. Сеттің құрамын өзгертуге болмайды." } },
         { id: "hit", illustration: "food-pizza", name: { ru: "Хит", kk: "Хит" }, price: { amount: 7800 },
           desc: { ru: "+ компот в подарок. Пепперони 30 см, Маргарита 30 см, Чикен 16 шт, Фри S. Состав сета менять нельзя.",
-                  kk: "+ сыйлыққа компот. Пепперони 30 см, Маргарита 30 см, Чикен 16 дана, Фри S. Сеттің құрамын өзгертуге болмайды." } }, // [?] «Фри S» — маленький? (sverka п. 8)
+                  kk: "+ сыйлыққа компот. Пепперони 30 см, Маргарита 30 см, Чикен 16 дана, Фри S. Сеттің құрамын өзгертуге болмайды." } }, // «Фри S» — маленький фри (владелец 20.11.2026)
         { id: "zapechennyy", illustration: "food-baked", name: { ru: "Запечённый", kk: "Пісірілген" }, price: { amount: 8600 },
           desc: { ru: "+ компот в подарок. Унаги запечённый 10 шт, Саке запечённый 10 шт, Филадельфия запечённый 10 шт, Цезарь запечённый 10 шт. Состав сета менять нельзя.",
                   kk: "+ сыйлыққа компот. Унаги пісірілген 10 дана, Саке пісірілген 10 дана, Филадельфия пісірілген 10 дана, Цезарь пісірілген 10 дана. Сеттің құрамын өзгертуге болмайды." } },
@@ -1113,43 +1129,43 @@ const priceData = {
                   kk: "+ сыйлыққа компот. Филадельфия классика, Цезарь темпура, Аляска ролл, Саке темпура, Капа маки — 10 данадан; Пепперони 30 см; Маргарита 30 см. Сеттің құрамын өзгертуге болмайды." } }
       ]
     },
-    // ───────────── ХОЛОДНЫЕ РОЛЛЫ (стр. 2) — [?] количество штук в меню не указано (sverka п. 10) ─────────────
+    // ───────────── ХОЛОДНЫЕ РОЛЛЫ (стр. 2) — во всех роллах 10 шт (pieces: 10; владелец 20.11.2026) ─────────────
     {
       id: "holodnye",
       illustration: "food-rolls",
       name: { ru: "Холодные роллы", kk: "Суық роллдар" },
       items: [
-        { id: "filadelfiya-klassika", illustration: "food-rolls", name: { ru: "Филадельфия классика", kk: "Филадельфия классика" }, price: { amount: 2350 },
+        { id: "filadelfiya-klassika", illustration: "food-rolls", name: { ru: "Филадельфия классика", kk: "Филадельфия классика" }, price: { amount: 2350 }, pieces: 10,
           desc: { ru: "сыр креметта, сёмга", kk: "креметта ірімшігі, сёмга" } },
-        { id: "filadelfiya-ogurec", illustration: "food-rolls", name: { ru: "Филадельфия с огурцом", kk: "Филадельфия қиярмен" }, price: { amount: 2400 },
+        { id: "filadelfiya-ogurec", illustration: "food-rolls", name: { ru: "Филадельфия с огурцом", kk: "Филадельфия қиярмен" }, price: { amount: 2400 }, pieces: 10,
           desc: { ru: "сыр креметта, сёмга, огурцы", kk: "креметта ірімшігі, сёмга, қияр" } },
-        { id: "filadelfiya-ikra", illustration: "food-rolls", name: { ru: "Филадельфия с икрой", kk: "Филадельфия уылдырықпен" }, price: { amount: 2400 },
+        { id: "filadelfiya-ikra", illustration: "food-rolls", name: { ru: "Филадельфия с икрой", kk: "Филадельфия уылдырықпен" }, price: { amount: 2400 }, pieces: 10,
           desc: { ru: "сыр креметта, сёмга, икра", kk: "креметта ірімшігі, сёмга, уылдырық" } },
-        { id: "filadelfiya-drakon", illustration: "food-rolls", name: { ru: "Филадельфия дракон", kk: "Филадельфия айдаһар" }, price: { amount: 2550 },
+        { id: "filadelfiya-drakon", illustration: "food-rolls", name: { ru: "Филадельфия дракон", kk: "Филадельфия айдаһар" }, price: { amount: 2550 }, pieces: 10,
           desc: { ru: "сыр креметта, угорь, сёмга", kk: "креметта ірімшігі, жыланбалық, сёмга" } },
-        { id: "filadelfiya-ugor", illustration: "food-rolls", name: { ru: "Филадельфия с угрём", kk: "Филадельфия жыланбалықпен" }, price: { amount: 2500 },
+        { id: "filadelfiya-ugor", illustration: "food-rolls", name: { ru: "Филадельфия с угрём", kk: "Филадельфия жыланбалықпен" }, price: { amount: 2500 }, pieces: 10,
           desc: { ru: "сыр креметта, сёмга, угорь", kk: "креметта ірімшігі, сёмга, жыланбалық" } },
-        { id: "kaliforniya-krevetka", illustration: "food-rolls", name: { ru: "Калифорния с креветкой", kk: "Калифорния асшаянмен" }, price: { amount: 2350 },
+        { id: "kaliforniya-krevetka", illustration: "food-rolls", name: { ru: "Калифорния с креветкой", kk: "Калифорния асшаянмен" }, price: { amount: 2350 }, pieces: 10,
           desc: { ru: "сыр креметта, креветка, огурец, тобико", kk: "креметта ірімшігі, асшаян, қияр, тобико" } },
-        { id: "kaliforniya-losos", illustration: "food-rolls", name: { ru: "Калифорния с лососем", kk: "Калифорния лососьпен" }, price: { amount: 2250 },
+        { id: "kaliforniya-losos", illustration: "food-rolls", name: { ru: "Калифорния с лососем", kk: "Калифорния лососьпен" }, price: { amount: 2250 }, pieces: 10,
           desc: { ru: "сыр креметта, лосось, огурец, тобико", kk: "креметта ірімшігі, лосось, қияр, тобико" } },
-        { id: "kaliforniya-krab", illustration: "food-rolls", name: { ru: "Калифорния с крабом", kk: "Калифорния крабпен" }, price: { amount: 2200 },
+        { id: "kaliforniya-krab", illustration: "food-rolls", name: { ru: "Калифорния с крабом", kk: "Калифорния крабпен" }, price: { amount: 2200 }, pieces: 10,
           desc: { ru: "сыр креметта, снежный краб, огурец, тобико", kk: "креметта ірімшігі, қар крабы, қияр, тобико" } },
-        { id: "kapa-maki", illustration: "food-rolls", name: { ru: "Капа маки", kk: "Капа маки" }, price: { amount: 950 },
+        { id: "kapa-maki", illustration: "food-rolls", name: { ru: "Капа маки", kk: "Капа маки" }, price: { amount: 950 }, pieces: 10,
           desc: { ru: "рис, кунжут, огурец", kk: "күріш, күнжіт, қияр" } },
-        { id: "ebi-maki", illustration: "food-rolls", name: { ru: "Эби маки", kk: "Эби маки" }, price: { amount: 1100 },
+        { id: "ebi-maki", illustration: "food-rolls", name: { ru: "Эби маки", kk: "Эби маки" }, price: { amount: 1100 }, pieces: 10,
           desc: { ru: "рис, креветка", kk: "күріш, асшаян" } },
-        { id: "kani-maki", illustration: "food-rolls", name: { ru: "Кани маки", kk: "Кани маки" }, price: { amount: 1100 },
+        { id: "kani-maki", illustration: "food-rolls", name: { ru: "Кани маки", kk: "Кани маки" }, price: { amount: 1100 }, pieces: 10,
           desc: { ru: "рис, снежный краб", kk: "күріш, қар крабы" } },
-        { id: "unagi-maki", illustration: "food-rolls", name: { ru: "Унаги маки", kk: "Унаги маки" }, price: { amount: 1200 },
+        { id: "unagi-maki", illustration: "food-rolls", name: { ru: "Унаги маки", kk: "Унаги маки" }, price: { amount: 1200 }, pieces: 10,
           desc: { ru: "рис, угорь, унаги соус", kk: "күріш, жыланбалық, унаги тұздығы" } },
-        { id: "saki-maki", illustration: "food-rolls", name: { ru: "Саки маки", kk: "Саки маки" }, price: { amount: 1200 },
+        { id: "saki-maki", illustration: "food-rolls", name: { ru: "Саки маки", kk: "Саки маки" }, price: { amount: 1200 }, pieces: 10,
           desc: { ru: "рис, лосось", kk: "күріш, лосось" } },
-        { id: "alyaska", illustration: "food-rolls", name: { ru: "Аляска", kk: "Аляска" }, price: { amount: 2250 },
+        { id: "alyaska", illustration: "food-rolls", name: { ru: "Аляска", kk: "Аляска" }, price: { amount: 2250 }, pieces: 10,
           desc: { ru: "сыр креметта, огурец, лосось, кунжут", kk: "креметта ірімшігі, қияр, лосось, күнжіт" } },
-        { id: "bonito", illustration: "food-rolls", name: { ru: "Бонито", kk: "Бонито" }, price: { amount: 2050 },
+        { id: "bonito", illustration: "food-rolls", name: { ru: "Бонито", kk: "Бонито" }, price: { amount: 2050 }, pieces: 10,
           desc: { ru: "сыр креметта, стружка тунца, сёмга, огурец", kk: "креметта ірімшігі, тунец жоңқасы, сёмга, қияр" } },
-        { id: "kanada", illustration: "food-rolls", name: { ru: "Канада", kk: "Канада" }, price: { amount: 2350 },
+        { id: "kanada", illustration: "food-rolls", name: { ru: "Канада", kk: "Канада" }, price: { amount: 2350 }, pieces: 10,
           desc: { ru: "сыр креметта, угорь, унаги соус, огурец", kk: "креметта ірімшігі, жыланбалық, унаги тұздығы, қияр" } }
       ]
     },
@@ -1159,23 +1175,23 @@ const priceData = {
       illustration: "food-baked",
       name: { ru: "Запечённые роллы", kk: "Пісірілген роллдар" },
       items: [
-        { id: "cezar-zapechennyy", illustration: "food-baked", name: { ru: "Цезарь запечённый", kk: "Цезарь пісірілген" }, price: { amount: 2150 },
+        { id: "cezar-zapechennyy", illustration: "food-baked", name: { ru: "Цезарь запечённый", kk: "Цезарь пісірілген" }, price: { amount: 2150 }, pieces: 10,
           desc: { ru: "запечённый соус, курица, помидор, сыр креметта", kk: "пісіру тұздығы, тауық еті, қызанақ, креметта ірімшігі" } },
-        { id: "filadelfiya-zapechennyy", illustration: "food-baked", name: { ru: "Филадельфия запечённый", kk: "Филадельфия пісірілген" }, price: { amount: 2500 },
+        { id: "filadelfiya-zapechennyy", illustration: "food-baked", name: { ru: "Филадельфия запечённый", kk: "Филадельфия пісірілген" }, price: { amount: 2500 }, pieces: 10,
           desc: { ru: "запечённый соус, сёмга, огурец, сыр креметта", kk: "пісіру тұздығы, сёмга, қияр, креметта ірімшігі" } },
-        { id: "lava-zapechennyy", illustration: "food-baked", name: { ru: "Лава запечённый", kk: "Лава пісірілген" }, price: { amount: 2400 },
+        { id: "lava-zapechennyy", illustration: "food-baked", name: { ru: "Лава запечённый", kk: "Лава пісірілген" }, price: { amount: 2400 }, pieces: 10,
           desc: { ru: "сыр креметта, креветки, лосось, огурцы", kk: "креметта ірімшігі, асшаян, лосось, қияр" } },
-        { id: "amerika-zapechennyy", illustration: "food-baked", name: { ru: "Америка запечённый", kk: "Америка пісірілген" }, price: { amount: 2250 },
+        { id: "amerika-zapechennyy", illustration: "food-baked", name: { ru: "Америка запечённый", kk: "Америка пісірілген" }, price: { amount: 2250 }, pieces: 10,
           desc: { ru: "сыр креметта, лосось, угорь, огурцы, унаги соус, кунжут, запечённый соус", kk: "креметта ірімшігі, лосось, жыланбалық, қияр, унаги тұздығы, күнжіт, пісіру тұздығы" } },
-        { id: "kaliforniya-zapechennyy", illustration: "food-baked", name: { ru: "Калифорния запечённый", kk: "Калифорния пісірілген" }, price: { amount: 2050 },
+        { id: "kaliforniya-zapechennyy", illustration: "food-baked", name: { ru: "Калифорния запечённый", kk: "Калифорния пісірілген" }, price: { amount: 2050 }, pieces: 10,
           desc: { ru: "сыр креметта, снежный краб, огурцы, унаги соус, запечённый соус", kk: "креметта ірімшігі, қар крабы, қияр, унаги тұздығы, пісіру тұздығы" } },
-        { id: "krevetki-zapechennyy", illustration: "food-baked", name: { ru: "С креветками запечённый", kk: "Асшаянмен пісірілген" }, price: { amount: 2050 },
+        { id: "krevetki-zapechennyy", illustration: "food-baked", name: { ru: "С креветками запечённый", kk: "Асшаянмен пісірілген" }, price: { amount: 2050 }, pieces: 10,
           desc: { ru: "сыр креметта, огурцы, креветки, унаги соус, запечённый соус", kk: "креметта ірімшігі, қияр, асшаян, унаги тұздығы, пісіру тұздығы" } },
-        { id: "sake-zapechennyy", illustration: "food-baked", name: { ru: "Саке запечённый", kk: "Саке пісірілген" }, price: { amount: 2050 },
+        { id: "sake-zapechennyy", illustration: "food-baked", name: { ru: "Саке запечённый", kk: "Саке пісірілген" }, price: { amount: 2050 }, pieces: 10,
           desc: { ru: "сыр креметта, лосось, огурцы, запечённый соус", kk: "креметта ірімшігі, лосось, қияр, пісіру тұздығы" } },
-        { id: "unagi-zapechennyy", illustration: "food-baked", name: { ru: "Унаги запечённый", kk: "Унаги пісірілген" }, price: { amount: 2100 },
+        { id: "unagi-zapechennyy", illustration: "food-baked", name: { ru: "Унаги запечённый", kk: "Унаги пісірілген" }, price: { amount: 2100 }, pieces: 10,
           desc: { ru: "сыр креметта, угорь, огурцы, унаги соус, запечённый соус", kk: "креметта ірімшігі, жыланбалық, қияр, унаги тұздығы, пісіру тұздығы" } },
-        { id: "kapa-zapechennyy", illustration: "food-baked", name: { ru: "Капа запечённый", kk: "Капа пісірілген" }, price: { amount: 2000 },
+        { id: "kapa-zapechennyy", illustration: "food-baked", name: { ru: "Капа запечённый", kk: "Капа пісірілген" }, price: { amount: 2000 }, pieces: 10,
           desc: { ru: "огурец, рис, кунжут, запечённый соус", kk: "қияр, күріш, күнжіт, пісіру тұздығы" } }
       ]
     },
@@ -1185,23 +1201,23 @@ const priceData = {
       illustration: "food-rolls",
       name: { ru: "Роллы темпура", kk: "Темпура роллдар" },
       items: [
-        { id: "roll-krevetki", illustration: "food-rolls", name: { ru: "Ролл с креветками", kk: "Асшаянмен ролл" }, price: { amount: 1950 },
+        { id: "roll-krevetki", illustration: "food-rolls", name: { ru: "Ролл с креветками", kk: "Асшаянмен ролл" }, price: { amount: 1950 }, pieces: 10,
           desc: { ru: "сыр креметта, огурцы, креветки, унаги соус", kk: "креметта ірімшігі, қияр, асшаян, унаги тұздығы" } },
-        { id: "amerika-tempura", illustration: "food-rolls", name: { ru: "Америка темпура", kk: "Америка темпура" }, price: { amount: 2190 },
+        { id: "amerika-tempura", illustration: "food-rolls", name: { ru: "Америка темпура", kk: "Америка темпура" }, price: { amount: 2190 }, pieces: 10,
           desc: { ru: "сыр креметта, лосось, угорь, огурцы, унаги соус, кунжут", kk: "креметта ірімшігі, лосось, жыланбалық, қияр, унаги тұздығы, күнжіт" } },
-        { id: "kaliforniya-tempura", illustration: "food-rolls", name: { ru: "Калифорния темпура", kk: "Калифорния темпура" }, price: { amount: 1950 },
+        { id: "kaliforniya-tempura", illustration: "food-rolls", name: { ru: "Калифорния темпура", kk: "Калифорния темпура" }, price: { amount: 1950 }, pieces: 10,
           desc: { ru: "сыр креметта, снежный краб, огурцы, унаги соус", kk: "креметта ірімшігі, қар крабы, қияр, унаги тұздығы" } },
-        { id: "sake-tempura", illustration: "food-rolls", name: { ru: "Саке темпура", kk: "Саке темпура" }, price: { amount: 1950 },
+        { id: "sake-tempura", illustration: "food-rolls", name: { ru: "Саке темпура", kk: "Саке темпура" }, price: { amount: 1950 }, pieces: 10,
           desc: { ru: "сыр креметта, лосось, огурцы", kk: "креметта ірімшігі, лосось, қияр" } },
-        { id: "unagi-tempura", illustration: "food-rolls", name: { ru: "Унаги темпура", kk: "Унаги темпура" }, price: { amount: 2000 },
+        { id: "unagi-tempura", illustration: "food-rolls", name: { ru: "Унаги темпура", kk: "Унаги темпура" }, price: { amount: 2000 }, pieces: 10,
           desc: { ru: "сыр креметта, угорь, огурцы, унаги соус", kk: "креметта ірімшігі, жыланбалық, қияр, унаги тұздығы" } },
-        { id: "cezar-roll", illustration: "food-rolls", name: { ru: "Цезарь ролл", kk: "Цезарь ролл" }, price: { amount: 2050 },
+        { id: "cezar-roll", illustration: "food-rolls", name: { ru: "Цезарь ролл", kk: "Цезарь ролл" }, price: { amount: 2050 }, pieces: 10,
           desc: { ru: "сыр креметта, курица, помидор", kk: "креметта ірімшігі, тауық еті, қызанақ" } },
-        { id: "kapa-tempura", illustration: "food-rolls", name: { ru: "Капа темпура", kk: "Капа темпура" }, price: { amount: 1900 },
+        { id: "kapa-tempura", illustration: "food-rolls", name: { ru: "Капа темпура", kk: "Капа темпура" }, price: { amount: 1900 }, pieces: 10,
           desc: { ru: "огурец, рис, кунжут", kk: "қияр, күріш, күнжіт" } }
       ]
     },
-    // ───────────── ПИЦЦА (стр. 8) — одна цена, размер не указан (sverka п. 6) ─────────────
+    // ───────────── ПИЦЦА (стр. 8) — один размер 30 см (в начале описания; владелец 20.11.2026) ─────────────
     // В макете «Болонезье», «Охотничьи» — опечатки, исправлено; «Ладивина» — как в меню (sverka п. 14)
     {
       id: "pizza",
@@ -1209,35 +1225,35 @@ const priceData = {
       name: { ru: "Пицца", kk: "Пицца" },
       items: [
         { id: "pepperoni", illustration: "food-pizza", name: { ru: "Пепперони", kk: "Пепперони" }, price: { amount: 2000 },
-          desc: { ru: "соус, сыр, колбаски", kk: "тұздық, ірімшік, шұжықтар" } },
+          desc: { ru: "30 см · соус, сыр, колбаски", kk: "30 см · тұздық, ірімшік, шұжықтар" } },
         { id: "margarita", illustration: "food-pizza", name: { ru: "Маргарита", kk: "Маргарита" }, price: { amount: 1900 },
-          desc: { ru: "соус, сыр, помидоры", kk: "тұздық, ірімшік, қызанақ" } },
+          desc: { ru: "30 см · соус, сыр, помидоры", kk: "30 см · тұздық, ірімшік, қызанақ" } },
         { id: "boloneze", illustration: "food-pizza", name: { ru: "Болоньезе", kk: "Болоньезе" }, price: { amount: 2200 },
-          desc: { ru: "соус, сыр, говяжий фарш", kk: "тұздық, ірімшік, сиыр етінің тартпасы" } },
+          desc: { ru: "30 см · соус, сыр, говяжий фарш", kk: "30 см · тұздық, ірімшік, сиыр етінің тартпасы" } },
         { id: "4-sezona", illustration: "food-pizza", name: { ru: "4 сезона", kk: "4 маусым" }, price: { amount: 2400 },
-          desc: { ru: "колбаски, курица, грибы, помидоры", kk: "шұжықтар, тауық еті, саңырауқұлақ, қызанақ" } },
+          desc: { ru: "30 см · колбаски, курица, грибы, помидоры", kk: "30 см · шұжықтар, тауық еті, саңырауқұлақ, қызанақ" } },
         { id: "kurinaya", illustration: "food-pizza", name: { ru: "Куриная", kk: "Тауық етімен" }, price: { amount: 2000 },
-          desc: { ru: "соус, сыр, курица", kk: "тұздық, ірімшік, тауық еті" } },
+          desc: { ru: "30 см · соус, сыр, курица", kk: "30 см · тұздық, ірімшік, тауық еті" } },
         { id: "s-semgoy", illustration: "food-pizza", name: { ru: "С сёмгой", kk: "Сёмгамен" }, price: { amount: 2450 },
-          desc: { ru: "соус, сыр, сёмга, творожный сыр креметта", kk: "тұздық, ірімшік, сёмга, креметта сүзбе ірімшігі" } },
+          desc: { ru: "30 см · соус, сыр, сёмга, творожный сыр креметта", kk: "30 см · тұздық, ірімшік, сёмга, креметта сүзбе ірімшігі" } },
         { id: "s-gribami", illustration: "food-pizza", name: { ru: "С грибами", kk: "Саңырауқұлақпен" }, price: { amount: 2100 },
-          desc: { ru: "соус, сыр, грибы шампиньоны", kk: "тұздық, ірімшік, шампиньон саңырауқұлағы" } },
+          desc: { ru: "30 см · соус, сыр, грибы шампиньоны", kk: "30 см · тұздық, ірімшік, шампиньон саңырауқұлағы" } },
         { id: "mexico", illustration: "food-pizza", name: { ru: "Mexico", kk: "Mexico" }, price: { amount: 2250 }, spicy: true, // в меню «Mexico 🌶»
-          desc: { ru: "соус, сыр, перец светофор, курица, кукуруза, острые перчики", kk: "тұздық, ірімшік, түрлі түсті бұрыш, тауық еті, жүгері, ащы бұрыш" } },
+          desc: { ru: "30 см · соус, сыр, перец светофор, курица, кукуруза, острые перчики", kk: "30 см · тұздық, ірімшік, түрлі түсті бұрыш, тауық еті, жүгері, ащы бұрыш" } },
         { id: "kurica-griby", illustration: "food-pizza", name: { ru: "Курица с грибами", kk: "Тауық еті мен саңырауқұлақ" }, price: { amount: 2250 },
-          desc: { ru: "соус, сыр, курица, грибы", kk: "тұздық, ірімшік, тауық еті, саңырауқұлақ" } },
+          desc: { ru: "30 см · соус, сыр, курица, грибы", kk: "30 см · тұздық, ірімшік, тауық еті, саңырауқұлақ" } },
         { id: "syrnaya", illustration: "food-pizza", name: { ru: "Сырная", kk: "Ірімшікті" }, price: { amount: 1900 },
-          desc: { ru: "соус, сыр, американский сыр", kk: "тұздық, ірімшік, америкалық ірімшік" } },
+          desc: { ru: "30 см · соус, сыр, американский сыр", kk: "30 см · тұздық, ірімшік, америкалық ірімшік" } },
         { id: "cezar", illustration: "food-pizza", name: { ru: "Цезарь", kk: "Цезарь" }, price: { amount: 2500 },
-          desc: { ru: "соус, сыр, помидоры, листья салата, курица, цезарь соус", kk: "тұздық, ірімшік, қызанақ, салат жапырақтары, тауық еті, цезарь тұздығы" } },
+          desc: { ru: "30 см · соус, сыр, помидоры, листья салата, курица, цезарь соус", kk: "30 см · тұздық, ірімшік, қызанақ, салат жапырақтары, тауық еті, цезарь тұздығы" } },
         { id: "bbq", illustration: "food-pizza", name: { ru: "BBQ", kk: "BBQ" }, price: { amount: 2500 },
-          desc: { ru: "соус, сыр, курица, помидоры, соус барбекю", kk: "тұздық, ірімшік, тауық еті, қызанақ, барбекю тұздығы" } },
+          desc: { ru: "30 см · соус, сыр, курица, помидоры, соус барбекю", kk: "30 см · тұздық, ірімшік, тауық еті, қызанақ, барбекю тұздығы" } },
         { id: "ot-shefa", illustration: "food-pizza", name: { ru: "От шефа", kk: "Шефтен" }, price: { amount: 2500 },
-          desc: { ru: "соус, сыр, помидор, колбаса, шампиньоны, охотничьи колбаски", kk: "тұздық, ірімшік, қызанақ, шұжық, шампиньон, аңшы шұжықтары" } },
+          desc: { ru: "30 см · соус, сыр, помидор, колбаса, шампиньоны, охотничьи колбаски", kk: "30 см · тұздық, ірімшік, қызанақ, шұжық, шампиньон, аңшы шұжықтары" } },
         { id: "ladivina", illustration: "food-pizza", name: { ru: "Ладивина", kk: "Ладивина" }, price: { amount: 2500 }, // [?] написание — sverka п. 14
-          desc: { ru: "соус, сыр, фарш, перец светофор, кетчуп, соус тобаско", kk: "тұздық, ірімшік, тартпа ет, түрлі түсті бұрыш, кетчуп, тобаско тұздығы" } },
+          desc: { ru: "30 см · соус, сыр, фарш, перец светофор, кетчуп, соус тобаско", kk: "30 см · тұздық, ірімшік, тартпа ет, түрлі түсті бұрыш, кетчуп, тобаско тұздығы" } },
         { id: "ohotnichya", illustration: "food-pizza", name: { ru: "Охотничья", kk: "Аңшы" }, price: { amount: 2450 },
-          desc: { ru: "соус, сыр, грибы, охотничьи колбаски, солёные огурцы", kk: "тұздық, ірімшік, саңырауқұлақ, аңшы шұжықтары, тұздалған қияр" } }
+          desc: { ru: "30 см · соус, сыр, грибы, охотничьи колбаски, солёные огурцы", kk: "30 см · тұздық, ірімшік, саңырауқұлақ, аңшы шұжықтары, тұздалған қияр" } }
       ]
     },
     // ───────────── БУРГЕРЫ (стр. 6) ─────────────
@@ -2332,7 +2348,6 @@ function renderHome(screen) {
   insta.appendChild(svgNode(ICONS.instagram));
   insta.appendChild(el('span', null, t('instagram')));
   inner.appendChild(insta);
-  if (!company.instagram) inner.removeChild(insta); // у салона нет Instagram
   inner.appendChild(el('p', 'copy', '© ' + new Date().getFullYear() + ' ' + company.name));
   footer.appendChild(inner);
   screen.appendChild(footer);
