@@ -779,6 +779,61 @@
   @media (prefers-reduced-motion: reduce) {
     .fback:active { transform: none; }
   }
+
+/* ── Шапка «Арка» (settings.heroStyle: "arka"; вставляет сборка в место HERO_ARKA_CSS, без настройки — пусто; 21.11.2026, первое — taau) ──
+     Главная: верхняя строка, шапка и кнопки — одна полоса фирменного цвета на всю ширину колонки (#app), внизу — дуга, выгнутая
+     вверх, как арка логотипа (элемент .arka-arc из engine/food/arka.js): светлая линия по дуге и листик второго цвета.
+     Цвета — только из темы: фон --accent-strong, текст --on-accent (пара AA — tools/brand.js), лист и орнамент --accent-2
+     (нет второго цвета — --gold). Второстепенный текст — тот же --on-accent с прозрачностью (color-mix нет в iOS 15). */
+  .topbar, .hero, .actions, .arka-arc {
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right)));
+    padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .topbar, .hero, .actions { background: var(--accent-strong); color: var(--on-accent); }
+  .topbar { margin-top: calc(-1 * env(safe-area-inset-top)); padding-top: calc(8px + env(safe-area-inset-top)); padding-bottom: 2px; }
+  .topbar :focus-visible, .hero :focus-visible, .actions :focus-visible { outline-color: var(--on-accent); }
+  .icon-btn { background: transparent; border-color: var(--on-accent); color: var(--on-accent); }
+  .icon-btn:active { background: transparent; }
+  .lang { background: transparent; border-color: var(--on-accent); }
+  .lang button { color: var(--on-accent); }
+  .lang button[aria-pressed="true"] { background: var(--on-accent); color: var(--accent-strong); }
+
+  .hero { padding-bottom: 8px; }
+  .hero-top { height: 124px; }
+  .hero-top .sprig { display: none; }
+  .mono { width: 120px; height: 120px; color: var(--on-accent); }
+  .salon { color: var(--on-accent); margin-top: 2px; }
+  .hero .sub { color: var(--on-accent); opacity: .88; margin-top: 2px; }
+  .hero .ornament { margin: 8px auto 6px; }
+  .hero .ornament::before, .hero .ornament::after { background: var(--accent-2, var(--gold)); }
+  .hero .ornament span { border-color: var(--accent-2, var(--gold)); }
+  .addr { color: var(--on-accent); }
+  .addr span { opacity: .88; }
+  .addr .ico { color: var(--accent-2, var(--gold)); }
+  .hero .status, .hero .status.is-open { color: var(--on-accent); }
+  .hero .status:not(.is-open)::before { background: transparent; box-shadow: inset 0 0 0 1.5px currentColor; }
+  .hours-panel { color: var(--text); }
+
+  .actions { padding-top: 2px; padding-bottom: 14px; }
+  .action { color: var(--on-accent); }
+  .action > span:last-child { opacity: .9; }
+  .action .circle { background: var(--surface); border-color: transparent; }
+  .action:active .circle { background: var(--surface-2); }
+
+  /* Дуга под кнопками: заливка — цвет шапки, линия — цвет текста шапки, лист — второй цвет; только рисунок */
+  .arka-arc { position: relative; height: 34px; margin-top: -1px; margin-bottom: 4px; padding: 0; pointer-events: none; }
+  .arka-arc .arka-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .arka-arc .arka-fill { fill: var(--accent-strong); }
+  .arka-arc .arka-line { fill: none; stroke: var(--on-accent); stroke-width: 1.5; opacity: .85; }
+  .arka-arc .arka-leaf { position: absolute; left: 78%; top: 14px; width: 22px; height: 15px; transform: translate(-20%, -88%) rotate(6deg); }
+  .arka-arc .arka-leaf path { fill: var(--accent-2, var(--gold)); }
+
+/* Название под логотипом не видно (settings.hideName: true, только с heroStyle "arka"): логотип уже содержит название.
+     h1 остаётся в коде — для чтения с экрана и поисковиков (visually-hidden, не display: none). */
+  .hero .salon {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
 </style>
 </head>
 <body>
@@ -3453,6 +3508,25 @@ render = function (route, direction) {
     fbackWatch = new ResizeObserver(place);
     fbackWatch.observe(bar);
   }
+};
+
+// ─────────── Шапка «Арка» ───────────
+// Вставляет сборка (место HERO_ARKA в food.js), только если в settings.js кафе heroStyle: "arka" (первое — taau, 21.11.2026).
+// После кнопок главной — дуга, выгнутая вверх (как арка логотипа): заливка цвета шапки, светлая линия, листик второго цвета.
+// Только рисунок (aria-hidden, без нажатий); цвета — классами в engine/food/arka.css, в коде их нет.
+const ARKA_SVG = '<svg class="arka-svg" viewBox="0 0 100 34" preserveAspectRatio="none" focusable="false">' +
+  '<path class="arka-fill" d="M0 0H100V34Q50 -10 0 34Z"/>' +
+  '<path class="arka-line" d="M0 29Q50 -15 100 29" vector-effect="non-scaling-stroke"/></svg>' +
+  '<svg class="arka-leaf" viewBox="0 0 24 16" focusable="false"><path d="M1 15C4 6 12 1 23 1C21 10 13 15 1 15Z"/></svg>';
+const renderHomeArka = renderHome;
+renderHome = function (screen) {
+  renderHomeArka(screen);
+  const actions = screen.querySelector('.actions');
+  if (!actions) return;
+  const arc = el('div', 'arka-arc');
+  arc.setAttribute('aria-hidden', 'true');
+  arc.innerHTML = ARKA_SVG;
+  actions.parentNode.insertBefore(arc, actions.nextSibling);
 };
 
 init();
